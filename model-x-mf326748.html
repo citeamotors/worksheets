@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Technician Work Sheet - 2021 Tesla - Model X 326748</title>
+<style>
+  :root { --red:#d93838; --red-bg:#fde8e8; --green:#1f9d46; --green-bg:#e3f6e8; --ink:#111; --line:#333; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:#f4f4f4; font-family: Helvetica, Arial, sans-serif; color:var(--ink); font-size:13px; }
+  .sheet { max-width:760px; margin:16px auto; background:#fff; padding:20px 22px 24px; box-shadow:0 1px 4px rgba(0,0,0,.12); }
+  .head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; }
+  .head img { width:233px; height:auto; display:block; }
+  .shop { text-align:right; font-size:11.5px; line-height:1.45; }
+  .row { display:flex; align-items:center; gap:8px; margin:6px 0; }
+  .lbl { font-weight:bold; white-space:nowrap; }
+  .val { flex:1; }
+  .title { display:flex; justify-content:space-between; align-items:baseline; margin-top:10px; }
+  .title h1 { font-size:17px; margin:0; }
+  .bold-it { font-weight:bold; font-style:italic; }
+  hr { border:0; border-top:1.2px solid var(--line); margin:10px 0; }
+  .cols { display:grid; grid-template-columns: 1fr 1fr; gap:0 24px; }
+  table { width:100%; border-collapse:separate; border-spacing:0 5px; }
+  th, td { padding:6px 4px; text-align:left; vertical-align:middle; }
+  th { border-top:1px solid var(--line); border-bottom:1px solid var(--line); font-size:12.5px; }
+  th.r, td.r { text-align:right; }
+  /* task checkbox: red when not done, green when done */
+  .done { appearance:none; -webkit-appearance:none; width:16px; height:16px; margin:0; cursor:pointer;
+          border:2px solid var(--red); background:var(--red-bg); border-radius:3px; display:inline-block; vertical-align:middle; }
+  .done:checked { border-color:var(--green); background:var(--green); box-shadow:inset 0 0 0 2px #fff; }
+  /* required fields: red when empty, green when filled */
+  .need { border:2px solid var(--red) !important; background:var(--red-bg) !important; border-radius:3px; }
+  .need.ok { border-color:var(--green) !important; background:var(--green-bg) !important; }
+  input[type=text], select, textarea {
+    font:inherit; color:inherit; border:1px solid #999; background:#fff; padding:3px 6px; outline:none; border-radius:3px;
+  }
+  select { min-width:200px; }
+  .odo { width:200px; font-weight:bold; font-size:14px; padding:4px 6px; }
+  .notes textarea { width:100%; min-height:110px; padding:6px; resize:vertical; margin-top:4px; }
+  tr.task td { background:var(--red-bg); color:#9b1c1c; border-top:2px solid var(--red); border-bottom:2px solid var(--red); }
+  tr.task td:first-child { border-left:2px solid var(--red); }
+  tr.task td:last-child { border-right:2px solid var(--red); }
+  tr.task.ok td { background:var(--green-bg); color:#13652d; border-color:var(--green); }
+  .legend { font-size:11px; color:#555; }
+  .foot { display:flex; justify-content:space-between; align-items:center; margin-top:14px; gap:12px; }
+  .btn { font:inherit; font-size:12px; padding:5px 10px; border:1px solid #888; background:#fafafa; border-radius:4px; cursor:pointer; }
+  .btn:hover { background:#eee; }
+
+  /* CSS-only states (iPhone Messages preview runs no JavaScript) */
+  tr.task:has(.done:checked) td { background:var(--green-bg); color:#13652d; border-color:var(--green); }
+  .need:not(:placeholder-shown) { border-color:var(--green) !important; background:var(--green-bg) !important; }
+  @media print {
+    body { background:#fff; }
+    .sheet { box-shadow:none; margin:0; max-width:none; padding:12px; }
+    .btn, .noprint { display:none !important; }
+    select, input[type=text], textarea { border:0 !important; background:transparent !important; appearance:none; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="head">
+    <img src="logo.png" alt="CITEA Motors">
+    <div class="shop">3274 Palm Parkway<br>Las Vegas, NV. 89104<br>Phone: (702)-503-9619<br>CIteamotors.com | Durbasir@gmail.com</div>
+  </div>
+
+  <div class="title">
+    <h1>Technician Work Sheet</h1>
+    <span class="bold-it">Service Writer : Basir Dur</span>
+    <span><span class="lbl">Print Date:</span> 11/13/2026</span>
+  </div>
+  <hr>
+
+  <div class="cols">
+    <div>
+      <div class="row"><span class="lbl">VIN # :</span><span>5YJXCVE50 MF326748</span></div>
+      <div class="row"><span class="lbl">Vehicle :</span><span>2021 Tesla - Model X</span></div>
+      <div class="row"><span class="lbl">Engine :</span><span>Electric</span></div>
+      <div class="row"><span class="lbl">Inspection Date :</span><span>11/13/26</span></div>
+    </div>
+    <div>
+      <div class="row"><span class="lbl">Promised Date :</span><span>11/13/26 5:00 P.M.</span></div>
+      <div class="row"><span class="lbl">Trans :</span><span>Single-Speed (Electric)</span></div>
+      <div class="row"><span class="lbl">Brakes :</span><span>4-Wheel Disc, ABS</span></div>
+      <div class="row"><span class="lbl">Model Year :</span><span>2021</span></div>
+    </div>
+  </div>
+  <hr>
+
+  <table>
+    <thead><tr><th style="width:40px">Done</th><th>Labor Description</th><th class="r" style="width:120px">Charged Hours</th></tr></thead>
+    <tbody>
+      <tr class="task">
+        <td><input type="checkbox" class="done" aria-label="Replace AC Compressor done"></td>
+        <td>Replace AC Compressor</td>
+        <td class="r">4.00</td>
+      </tr>
+      <tr class="task">
+        <td><input type="checkbox" class="done" aria-label="Evacuate &amp; Recharge AC System done"></td>
+        <td>Evacuate &amp; Recharge AC System</td>
+        <td class="r">1.00</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="row" style="margin-top:14px"><span class="lbl">Technician :</span>
+    <span id="tech">Kean</span>
+  </div>
+  <div class="row"><span class="lbl">OUT ODOMETER :</span><input type="text" id="odo" class="odo need" inputmode="numeric" placeholder="enter miles"></div>
+
+  <div class="notes" style="margin-top:14px">
+    <span class="lbl">Tech Notes</span>
+    <textarea id="notes" class="need" placeholder="Technician notes"></textarea>
+  </div>
+
+  <div class="foot">
+    <span class="legend">Red = still needed &nbsp;·&nbsp; Green = done.</span>
+  </div>
+</div>
+
+<script>
+(function () {
+  var KEY = "worksheet-2021-tesla-model-x326748";
+  var odo = document.getElementById("odo");
+  var notes = document.getElementById("notes");
+  var dones = Array.prototype.slice.call(document.querySelectorAll(".done"));
+
+  function store() { try { return window.localStorage; } catch (e) { return null; } }
+  function save() {
+    var s = store(); if (!s) return;
+    try { s.setItem(KEY, JSON.stringify({ odo: odo.value, notes: notes.value, done: dones.map(function (b) { return b.checked; }) })); } catch (e) {}
+  }
+  function odoStyle() {
+    var filled = odo.value.trim() !== "";
+    odo.classList.toggle("ok", filled);
+  }
+
+  function paint() {
+    dones.forEach(function (b) { b.closest("tr").classList.toggle("ok", b.checked); });
+    var n = notes.value.trim() !== "";
+    notes.classList.toggle("ok", n);
+  }
+
+  var s = store(), saved = null;
+  try { saved = s && JSON.parse(s.getItem(KEY)); } catch (e) {}
+  if (saved) {
+    odo.value = saved.odo || "";
+    notes.value = saved.notes || "";
+    (saved.done || []).forEach(function (c, i) { if (dones[i]) dones[i].checked = !!c; });
+  }
+  odoStyle(); paint();
+
+  notes.addEventListener("input", function () { paint(); save(); });
+  dones.forEach(function (b) { b.addEventListener("change", function () { paint(); save(); }); });
+  odo.addEventListener("input", function () { odoStyle(); save(); });
+
+})();
+</script>
+</body>
+</html>
