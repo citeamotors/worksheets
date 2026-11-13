@@ -68,6 +68,7 @@
   .pill.y:has(input:checked) span { background:#e6a817; color:#fff; }
   .pill.r:has(input:checked) span { background:var(--red); color:#fff; }
   .photos { margin-top:14px; }
+  .pmirror { display:none; }
   table.insp td.fd textarea { width:100%; box-sizing:border-box; resize:none; overflow:hidden; font:inherit; line-height:1.25; min-height:1.9em; padding:4px 6px; border:1px solid #bbb; border-radius:3px; display:block; }
   @media screen and (max-width:600px) {
     table.insp thead { display:none; }
@@ -103,6 +104,9 @@
     .sheet { box-shadow:none; margin:0; max-width:none; padding:0; }
     .btn, .noprint { display:none !important; }
     .photos, .photos.before { display:none !important; }
+    textarea.insp-t, #notes { display:none !important; }
+    .pmirror { display:block; white-space:pre-wrap; overflow-wrap:anywhere; font:inherit; line-height:1.25; min-height:1.3em; padding:1px 3px; }
+    .notes .pmirror { flex:1; min-height:34px; }
     .phsub { font-size:11px; margin:6px 0 4px; }
     .phsec { break-inside:auto; }
     .photopage { display:none !important; }
@@ -345,6 +349,16 @@
   window.addEventListener("resize", growAll);
   window.addEventListener("beforeprint", growAll);
   window.addEventListener("afterprint", growAll);
+
+  /* printed copy: plain text mirrors of the typed boxes, so printed height always matches the text */
+  var mirrors = [];
+  Array.prototype.forEach.call(document.querySelectorAll("textarea.insp-t, #notes"), function (t) {
+    var d = document.createElement("div"); d.className = "pmirror";
+    t.parentNode.insertBefore(d, t.nextSibling);
+    function sync() { d.textContent = t.value; }
+    t.addEventListener("input", sync); sync(); mirrors.push(sync);
+  });
+  window.addEventListener("beforeprint", function () { mirrors.forEach(function (f) { f(); }); });
 
   /* photos: embedded in the page so the PDF and JPEG include them; each new pick adds to the list */
   var pp = document.getElementById("photopage");
