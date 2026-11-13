@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Technician Work Sheet - 2021 Tesla - Model X 326748</title>
+<title>Technician Work Sheet - 2021 Tesla - Model X </title>
 <style>
   :root { --red:#d93838; --red-bg:#fde8e8; --green:#1f9d46; --green-bg:#e3f6e8; --ink:#111; --line:#333; }
   * { box-sizing: border-box; }
@@ -45,23 +45,113 @@
   .foot { display:flex; justify-content:space-between; align-items:center; margin-top:14px; gap:12px; }
   .btn { font:inherit; font-size:12px; padding:5px 10px; border:1px solid #888; background:#fafafa; border-radius:4px; cursor:pointer; }
   .btn:hover { background:#eee; }
+  /* general inspection: OK (green) / Watch (yellow) / Repair (red), CSS-only states */
+  .insp-title { display:flex; justify-content:space-between; align-items:baseline; margin:4px 0 6px; }
+  .insp-title h2 { font-size:15px; margin:0; }
+  table.insp th { border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  table.insp td.st { white-space:nowrap; width:190px; }
+  table.insp td.fd { width:auto; }
+  table.insp td.fd input { width:100%; }
+  table.insp tr.grp td { font-weight:bold; font-size:12px; background:#f2f2f2; padding:5px 4px; }
+  table.insp tr.irow td { border-bottom:1px solid #ddd; }
+  /* item names are highlighted red; highlight turns green once a result or finding is entered */
+  table.insp span.hl { background:var(--red); color:#fff; font-weight:bold; padding:1px 5px; border-radius:3px; }
+  table.insp tr.irow:has(input.insp-r:checked) span.hl,
+  table.insp tr.irow:has(input.insp-t:not(:placeholder-shown)) span.hl { background:var(--green); }
+  .pill { display:inline-block; margin-right:4px; cursor:pointer; position:relative; }
+  .pill input { position:absolute; opacity:0; width:1px; height:1px; margin:0; }
+  .pill span { display:inline-block; padding:3px 7px; border:1.5px solid; border-radius:12px; font-size:11px; font-weight:bold; }
+  .pill.g span { color:var(--green); border-color:var(--green); }
+  .pill.y span { color:#8a6100; border-color:#d4a017; }
+  .pill.r span { color:var(--red); border-color:var(--red); }
+  .pill.g:has(input:checked) span { background:var(--green); color:#fff; }
+  .pill.y:has(input:checked) span { background:#e6a817; color:#fff; }
+  .pill.r:has(input:checked) span { background:var(--red); color:#fff; }
+  .photos { margin-top:14px; }
+  .pmirror { display:none; }
+  table.insp td.fd textarea { width:100%; box-sizing:border-box; resize:none; overflow:hidden; font:inherit; line-height:1.25; min-height:1.9em; padding:4px 6px; border:1px solid #bbb; border-radius:3px; display:block; }
+  @media screen and (max-width:600px) {
+    table.insp thead { display:none; }
+    table.insp tr.irow { display:flex; flex-wrap:wrap; align-items:center; }
+    table.insp tr.irow td.nm { flex:1 1 auto; width:auto; }
+    table.insp tr.irow td.st { width:auto; flex:0 0 auto; }
+    table.insp tr.irow td.fd { flex:1 1 100%; width:100%; padding-bottom:6px; }
+    table.insp td.fd textarea { font-size:16px; }
+  }
+  .savebtns .btn { margin-left:6px; }
+  .capturing .savebtns, .capturing .photos input[type=file] { visibility:hidden; }
+  .phcount { font-size:12px; color:#13652d; margin-top:4px; }
+  .photos.before { margin:6px 0 10px; padding:8px 10px; border:1px dashed #999; border-radius:4px; }
+  .phsub { font-weight:bold; font-size:13px; margin:10px 0 6px; }
+  .phsec[hidden] { display:none !important; }
+  .photopage { display:none; }
+  .photopage.has { display:block; }
+  .phhead { font-size:14px; border-bottom:2px solid #222; padding-bottom:6px; margin-bottom:10px; }
+  .thumbs .ph { margin:0 0 14px; text-align:center; }
+  .thumbs img { width:100%; max-height:520px; object-fit:contain; border:1px solid #bbb; border-radius:4px; background:#fafafa; }
+  .thumbs .rm { font-size:12px; margin-top:4px; }
 
   /* CSS-only states (iPhone Messages preview runs no JavaScript) */
   tr.task:has(.done:checked) td { background:var(--green-bg); color:#13652d; border-color:var(--green); }
   .need:not(:placeholder-shown) { border-color:var(--green) !important; background:var(--green-bg) !important; }
   @media print {
-    body { background:#fff; }
-    .sheet { box-shadow:none; margin:0; max-width:none; padding:12px; }
+    @page { size:letter; margin:0.3in; }
+    [style*="margin-top:14px"] { margin-top:3px !important; }
+    .notes { display:flex !important; gap:8px; align-items:flex-start; }
+    .notes textarea { min-height:34px !important; margin-top:0 !important; }
+    * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    body { background:#fff; font-size:10.5px; }
+    .sheet { box-shadow:none; margin:0; max-width:none; padding:0; }
     .btn, .noprint { display:none !important; }
+    .photos, .photos.before { display:none !important; }
+    textarea.insp-t, #notes { display:none !important; }
+    .pmirror { display:block; white-space:pre-wrap; overflow-wrap:anywhere; font:inherit; line-height:1.25; min-height:1.3em; padding:1px 3px; }
+    .notes .pmirror { flex:1; min-height:34px; }
+    .phsub { font-size:11px; margin:6px 0 4px; }
+    .phsec { break-inside:auto; }
+    .photopage { display:none !important; }
+    .photopage.has { display:block !important; break-before:page; page-break-before:always; }
+    .phhead { font-size:12px; margin-bottom:6px; }
+    .thumbs { display:flex; flex-wrap:wrap; justify-content:space-between; align-content:flex-start; }
+    .thumbs .ph { break-inside:avoid; page-break-inside:avoid; width:49.2%; height:1.82in; margin:0 0 0.12in; box-sizing:border-box; }
+    .thumbs img { width:100%; height:1.82in; max-height:none; object-fit:contain; border:1px solid #bbb; background:#fff; }
+    .thumbs .rm { display:none !important; }
+    .head img { width:140px; }
+    .foot { display:none !important; }
+    .shop { font-size:9.5px; line-height:1.3; }
+    .row { margin:2px 0; }
+    .title { margin-top:4px; }
+    .title h1 { font-size:14px; }
+    hr { margin:5px 0; }
+    .insp-title { margin:2px 0 3px; }
+    .insp-title h2 { font-size:12px; }
+    table.insp th, table.insp td, table td, th { padding:1px 3px; line-height:1.2; }
+    table.insp td.nm { padding-top:2px; padding-bottom:2px; }
+    table.insp th { font-size:10px; }
+    table.insp tr.grp td { font-size:10px; padding:2px 3px; }
+    table.insp td.nm { white-space:nowrap; width:1%; }
+    table.insp td.st { width:1%; white-space:nowrap; padding-left:8px; }
+    table.insp td.fd { width:auto; }
+    .pill span { padding:0 5px; font-size:8.5px; }
+    .done { width:12px; height:12px; }
+    table { border-spacing:0 1px !important; }
+    hr { margin:3px 0 !important; }
+    .cols .row { margin:1px 0; }
+    .notes textarea { min-height:28px !important; }
+    td.r, th.r { font-size:10.5px; }
+    .notes { margin-top:4px !important; }
+    .notes textarea { min-height:42px; }
+    .foot { margin-top:4px; }
     select, input[type=text], textarea { border:0 !important; background:transparent !important; appearance:none; }
   }
 </style>
 </head>
 <body>
+<div id="doc">
 <div class="sheet">
   <div class="head">
     <img src="logo.png" alt="CITEA Motors">
-    <div class="shop">3274 Palm Parkway<br>Las Vegas, NV. 89104<br>Phone: (702)-503-9619<br>CIteamotors.com | Durbasir@gmail.com</div>
+    <div class="shop">3274 Palm Parkway<br>Las Vegas, NV. 89104<br>Repair &nbsp;|&nbsp; Collision<br>Phone: (702)-503-9619<br>CIteamotors.com | Durbasir@gmail.com</div>
   </div>
 
   <div class="title">
@@ -86,6 +176,44 @@
     </div>
   </div>
   <hr>
+
+  <div class="photos before">
+    <span class="lbl">Before Photos</span> <span class="legend">Take photos of the vehicle before starting any work</span>
+    <div><input type="file" id="photosB" accept="image/*" multiple></div>
+    <div class="phcount" id="phcountB"></div>
+  </div>
+
+  <div class="insp-title"><h2>General Inspection</h2><span class="legend">OK = green &nbsp;·&nbsp; Watch = yellow &nbsp;·&nbsp; Repair = red</span></div>
+  <table class="insp">
+    <thead><tr><th>Inspection</th><th>Result</th><th>Findings</th></tr></thead>
+    <tr class="grp"><td colspan="3">Fluids &amp; Engine</td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">Engine oil (level &amp; condition)</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r1" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r1" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r1" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f1" rows="1" placeholder="Findings"></textarea></td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">Coolant (level &amp; condition)</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r2" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r2" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r2" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f2" rows="1" placeholder="Findings"></textarea></td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">OBD-II scan (list every code)</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r3" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r3" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r3" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="codes" rows="1" placeholder="Codes or none"></textarea></td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">Dash warning lights</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r4" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r4" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r4" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="lights" rows="1" placeholder="Which lights are on"></textarea></td></tr>
+    <tr class="grp"><td colspan="3">Brakes, Tires &amp; Suspension</td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">Brakes (pads, rotors, lines)</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r5" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r5" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r5" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f5" rows="1" placeholder="Findings"></textarea></td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">Tires (tread, wear, pressure)</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r6" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r6" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r6" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f6" rows="1" placeholder="Findings"></textarea></td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">Suspension (shocks/struts, ball joints, bushings)</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r7" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r7" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r7" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f7" rows="1" placeholder="Findings"></textarea></td></tr>
+    <tr class="grp"><td colspan="3">Leaks, Hardware, Battery &amp; Alignment</td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">Leaks (oil, coolant, fuel, transmission)</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r8" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r8" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r8" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f8" rows="1" placeholder="Findings"></textarea></td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">Missing hardware (bolts, clips, brackets)</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r9" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r9" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r9" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f9" rows="1" placeholder="Findings"></textarea></td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">Battery test</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r10" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r10" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r10" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f10" rows="1" placeholder="Findings"></textarea></td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">Alignment</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r11" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r11" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r11" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f11" rows="1" placeholder="Findings"></textarea></td></tr>
+    <tr class="grp"><td colspan="3">Test Drive: Noise, Steering &amp; Handling</td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">Noises (knocks, squeals, clunks, grinding)</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r15" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r15" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r15" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f15" rows="1" placeholder="Findings"></textarea></td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">Steering play / loose or wandering</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r16" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r16" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r16" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f16" rows="1" placeholder="Findings"></textarea></td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">Suspension (bounce, clunks over bumps)</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r17" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r17" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r17" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f17" rows="1" placeholder="Findings"></textarea></td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">Alignment (OK holds left. Pulls right. Wheel off center.)</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r18" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r18" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r18" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f18" rows="1" placeholder="Findings"></textarea></td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">Brakes (pull, pedal feel, vibration)</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r19" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r19" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r19" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f19" rows="1" placeholder="Findings"></textarea></td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">Transmission (harsh, slipping, delayed engagement)</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r20" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r20" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r20" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f20" rows="1" placeholder="Findings"></textarea></td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">Engine (hesitation, misfire, rough running)</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r21" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r21" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r21" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f21" rows="1" placeholder="Findings"></textarea></td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">Vibration or wobble at speed</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r22" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r22" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r22" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f22" rows="1" placeholder="Findings"></textarea></td></tr>
+    <tr class="grp"><td colspan="3">Drive Test: A/C</td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">A/C cold air output</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r12" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r12" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r12" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f12" rows="1" placeholder="Findings"></textarea></td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">A/C compressor engagement &amp; noise</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r13" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r13" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r13" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f13" rows="1" placeholder="Findings"></textarea></td></tr>
+    <tr class="irow"><td class="nm"><span class="hl">A/C blower &amp; vent modes</span></td><td class="st"><label class="pill g"><input class="insp-r" type="radio" name="r14" value="g"><span>OK</span></label><label class="pill y"><input class="insp-r" type="radio" name="r14" value="y"><span>Watch</span></label><label class="pill r"><input class="insp-r" type="radio" name="r14" value="r"><span>Repair</span></label></td><td class="fd"><textarea class="insp-t" id="f14" rows="1" placeholder="Findings"></textarea></td></tr>
+  </table>
 
   <table>
     <thead><tr><th style="width:40px">Done</th><th>Labor Description</th><th class="r" style="width:120px">Charged Hours</th></tr></thead>
@@ -113,14 +241,31 @@
     <textarea id="notes" class="need" placeholder="Technician notes"></textarea>
   </div>
 
+  <div class="photos">
+    <span class="lbl">Photos</span>
+    <div><input type="file" id="photos" accept="image/*" multiple></div>
+    <div class="phcount" id="phcount"></div>
+  </div>
+
   <div class="foot">
     <span class="legend">Red = still needed &nbsp;·&nbsp; Green = done.</span>
+    <span class="savebtns">
+      <button class="btn" id="btnpdf" type="button">Save as PDF</button>
+      <button class="btn" id="btnjpg" type="button">Save as JPEG</button>
+    </span>
   </div>
 </div>
+<div class="sheet photopage" id="photopage">
+  <div class="phhead"><b>Photos</b> &nbsp;·&nbsp; <span id="phveh"></span></div>
+  <div class="phsec" id="secB" hidden><div class="phsub">Before Work</div><div class="thumbs" id="thumbsB"></div></div>
+  <div class="phsec" id="secA" hidden><div class="phsub">Photos</div><div class="thumbs" id="thumbs"></div></div>
+</div>
+</div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 (function () {
-  var KEY = "worksheet-2021-tesla-model-x326748";
+  var KEY = "worksheet-2021-tesla-model-x-mf326748";
   var odo = document.getElementById("odo");
   var notes = document.getElementById("notes");
   var dones = Array.prototype.slice.call(document.querySelectorAll(".done"));
@@ -153,6 +298,114 @@
   notes.addEventListener("input", function () { paint(); save(); });
   dones.forEach(function (b) { b.addEventListener("change", function () { paint(); save(); }); });
   odo.addEventListener("input", function () { odoStyle(); save(); });
+
+  /* general inspection: remember choices and findings on this device */
+  var INSP_KEY = KEY + "-insp";
+  function saveInsp() {
+    var s = store(); if (!s) return;
+    var o = { r: {}, t: {} };
+    document.querySelectorAll(".insp-r:checked").forEach(function (r) { o.r[r.name] = r.value; });
+    document.querySelectorAll(".insp-t").forEach(function (t) { o.t[t.id] = t.value; });
+    try { s.setItem(INSP_KEY, JSON.stringify(o)); } catch (e) {}
+  }
+  function loadInsp() {
+    var s = store(); if (!s) return;
+    var o = null;
+    try { o = JSON.parse(s.getItem(INSP_KEY)); } catch (e) {}
+    if (!o) return;
+    Object.keys(o.r || {}).forEach(function (n) {
+      var r = document.querySelector('.insp-r[name="' + n + '"][value="' + o.r[n] + '"]');
+      if (r) r.checked = true;
+    });
+    Object.keys(o.t || {}).forEach(function (id) {
+      var t = document.getElementById(id); if (t) t.value = o.t[id];
+    });
+  }
+  loadInsp();
+  document.addEventListener("change", saveInsp);
+  document.addEventListener("input", saveInsp);
+
+  /* save buttons: PDF uses the print dialog, JPEG captures the sheet */
+  document.getElementById("btnpdf").addEventListener("click", function () {
+    var imgs = Array.prototype.slice.call(document.querySelectorAll("#thumbs img"));
+    Promise.all(imgs.map(function (i) { return i.decode ? i.decode().catch(function () {}) : Promise.resolve(); }))
+      .then(function () { setTimeout(function () { window.print(); }, 150); });
+  });
+  document.getElementById("btnjpg").addEventListener("click", function () {
+    if (typeof html2canvas === "undefined") { alert("JPEG needs an internet connection. Use Save as PDF instead."); return; }
+    document.body.classList.add("capturing");
+    html2canvas(document.getElementById("doc"), { scale: 2, backgroundColor: "#fff", useCORS: true }).then(function (c) {
+      document.body.classList.remove("capturing");
+      c.toBlob(function (blob) {
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = (document.title.replace(/[^A-Za-z0-9]+/g, "-") || "worksheet") + ".jpg";
+        document.body.appendChild(a); a.click(); a.remove();
+      }, "image/jpeg", 0.92);
+    }, function () { document.body.classList.remove("capturing"); });
+  });
+
+  /* findings boxes grow to show everything typed */
+  function grow(t) { t.style.height = "auto"; t.style.height = t.scrollHeight + 2 + "px"; }
+  var finds = document.querySelectorAll("textarea.insp-t");
+  function growAll() { Array.prototype.forEach.call(finds, grow); }
+  Array.prototype.forEach.call(finds, function (t) { t.addEventListener("input", function () { grow(t); }); });
+  growAll();
+  window.addEventListener("resize", growAll);
+  window.addEventListener("beforeprint", growAll);
+  window.addEventListener("afterprint", growAll);
+
+  /* printed copy: plain text mirrors of the typed boxes, so printed height always matches the text */
+  var mirrors = [];
+  Array.prototype.forEach.call(document.querySelectorAll("textarea.insp-t, #notes"), function (t) {
+    var d = document.createElement("div"); d.className = "pmirror";
+    t.parentNode.insertBefore(d, t.nextSibling);
+    function sync() { d.textContent = t.value; }
+    t.addEventListener("input", sync); sync(); mirrors.push(sync);
+  });
+  window.addEventListener("beforeprint", function () { mirrors.forEach(function (f) { f(); }); });
+
+  /* photos: embedded in the page so the PDF and JPEG include them; each new pick adds to the list */
+  var pp = document.getElementById("photopage");
+  var veh = document.querySelector("title"); document.getElementById("phveh").textContent = veh ? veh.textContent.replace(/^Technician Work Sheet - /, "") : "";
+  var sets = [
+    { input: document.getElementById("photos"),  grid: document.getElementById("thumbs"),  sec: document.getElementById("secA"), count: document.getElementById("phcount") },
+    { input: document.getElementById("photosB"), grid: document.getElementById("thumbsB"), sec: document.getElementById("secB"), count: document.getElementById("phcountB") }
+  ];
+  function refresh() {
+    var total = 0;
+    sets.forEach(function (st) {
+      var n = st.grid.querySelectorAll(".ph").length; total += n;
+      st.sec.hidden = n === 0;
+      st.count.textContent = n ? n + (n === 1 ? " photo added (see Photos page below)" : " photos added (see Photos page below)") : "";
+    });
+    pp.classList.toggle("has", total > 0);
+  }
+  function addPhoto(f, grid) {
+    return new Promise(function (done) {
+      var url = URL.createObjectURL(f), src = new Image();
+      src.onload = function () {
+        var max = 1600, w = src.naturalWidth, h = src.naturalHeight, k = Math.min(1, max / Math.max(w, h));
+        var c = document.createElement("canvas"); c.width = Math.round(w * k); c.height = Math.round(h * k);
+        c.getContext("2d").drawImage(src, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        var box = document.createElement("div"); box.className = "ph";
+        var im = document.createElement("img"); im.src = c.toDataURL("image/jpeg", 0.85);
+        var rm = document.createElement("button"); rm.type = "button"; rm.className = "btn rm"; rm.textContent = "Remove photo";
+        rm.addEventListener("click", function () { box.remove(); refresh(); });
+        box.appendChild(im); box.appendChild(rm); grid.appendChild(box); done();
+      };
+      src.onerror = function () { URL.revokeObjectURL(url); done(); };
+      src.src = url;
+    });
+  }
+  sets.forEach(function (st) {
+    st.input.addEventListener("change", function () {
+      var files = Array.prototype.slice.call(st.input.files);
+      files.reduce(function (p, f) { return p.then(function () { return addPhoto(f, st.grid); }); }, Promise.resolve())
+        .then(function () { st.input.value = ""; refresh(); });
+    });
+  });
 
 })();
 </script>
